@@ -13,10 +13,18 @@ func new_game():
     score = 0
     $Player.start($Position2D.position)
     $StartTimer.start()
+    $HUD.update_score(score)
+    $HUD.show_message("Get Ready")
+    $Music.play()
 
 
-func _process(delta):
-   pass
+func game_over():
+    $ScoreTimer.stop()
+    $MobTimer.stop()
+    $HUD.show_game_over()
+    $Music.stop()
+    $DealthSound.play()
+    get_tree().call_group("mobs", "queue_free")
 
 
 func _on_StartTimer_timeout():
@@ -40,8 +48,4 @@ func _on_MobTimer_timeout():
 
 func _on_ScoreTimer_timeout():
     score += 1
-
-
-func game_over():
-    $ScoreTimer.stop()
-    $MobTimer.stop()
+    $HUD.update_score(score)
